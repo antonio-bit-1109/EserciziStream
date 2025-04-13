@@ -16,6 +16,13 @@ public class Main {
         List<String> listaUnformatted = Arrays.asList("  ciao  ", null, "   ", "mondo", "  java  ");
         String testo = "ciao sono un bambino molto cattivo e questo bambino dice ciao";
 
+        List<String> frasi = List.of(
+                "Java è un linguaggio potente",
+                "Mi piace programmare ogni giorno",
+                "Stream e lambda sono utili",
+                "Imparare è un processo continuo"
+        );
+
         List<List<String>> listaDiListe = Arrays.asList(
                 Arrays.asList("a", "b", "c"),
                 Arrays.asList("d", "e"),
@@ -69,6 +76,14 @@ public class Main {
         System.out.println("quante volte è ripetuta una parola " + findFrequencyEveryWord(testo));
         System.out.println(findParoleChiave(testo, "bambino"));
         System.out.println("frequenza di ogni parola. " + findFrequencyEveryWord(testo));
+        System.out.println("numeri duplicati " + duplicate(listaNumeri));
+        System.out.println("parole piu lunghe di 3 caratteri" + findLongest(listaLettere, 3));
+        System.out.println("chiave è la lunghezza della parola\n" +
+                "    // e il valore è quante parole di quella lunghezza ci sono. ---> " +
+                buildMap(listaPersone.stream().map(Person::getNome).toList()));
+
+        System.out.println(" per lettera iniziale e ordinale alfabeticamente all’interno di ogni gruppo" + raggruppa(listaLettere));
+        System.out.println("rendi flat una lista --> " + flattaLista(frasi));
     }
 
     //      1. ✅ Dato un List<Integer>, stampa ogni elemento usando forEach.
@@ -216,6 +231,41 @@ public class Main {
         return l.stream().collect(Collectors.groupingBy(word ->
                 word, Collectors.filtering(word ->
                 word.equals(parolaChiave), Collectors.counting())));
+    }
+
+    //    21. Dato un List<Integer>, crea una nuova lista dove ogni numero è raddoppiato.
+    private static List<Integer> duplicate(List<Integer> listI) {
+        return listI.stream().map(n -> n * 2).collect(Collectors.toList());
+    }
+
+    //    22. Dato un List<String> e un numero N, trova tutte le parole più lunghe di N caratteri.
+    private static List<String> findLongest(List<String> lista, int n) {
+        return lista.stream().filter(word -> word.length() > n).toList();
+    }
+
+    //23. Dato un List<String>,
+    // crea una mappa Map<Integer, Long> dove la chiave è la lunghezza della parola
+    // e il valore è quante parole di quella lunghezza ci sono.
+    private static Map<Integer, Long> buildMap(List<String> listaS) {
+        return listaS.stream().collect(Collectors.groupingBy(word -> word.length(),
+                Collectors.counting()));
+    }
+
+    //    24. Dato un List<String>,
+//    raggruppa le parole per lettera iniziale e ordinale alfabeticamente all’interno di ogni gruppo
+//    (Map<Character, List<String>>).
+    private static Map<Character, List<String>> raggruppa(List<String> list) {
+        return list.stream().collect(Collectors.groupingBy(word -> word.charAt(0),
+                Collectors.toUnmodifiableList()));
+    }
+
+    // 25. Hai un List<String> con frasi.
+    // Dividi ogni frase in parole e ottieni una lista piatta di tutte le parole (usa flatMap).
+    private static List<String> flattaLista(List<String> listaFrasi) {
+        return listaFrasi.stream()
+                .map(word -> Arrays.stream(word.split(" ")).toList())
+                .flatMap(list -> list.stream()
+                        .map(word -> word.toLowerCase())).toList();
     }
 }
 
