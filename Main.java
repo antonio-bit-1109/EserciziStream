@@ -68,6 +68,7 @@ public class Main {
         System.out.println(divideMaggiorenniAndNot(listaPersone));
         System.out.println("quante volte è ripetuta una parola " + findFrequencyEveryWord(testo));
         System.out.println(findParoleChiave(testo, "bambino"));
+        System.out.println("frequenza di ogni parola. " + findFrequencyEveryWord(testo));
     }
 
     //      1. ✅ Dato un List<Integer>, stampa ogni elemento usando forEach.
@@ -199,6 +200,13 @@ public class Main {
         List<String> l = Arrays.stream(testo.split(" ")).toList();
         return l.stream().collect(Collectors.groupingBy(word -> word, Collectors.counting()));
     }
+
+    //    19. 🕵️ Dato un testo, crea una Map<String, Long> con la frequenza di ogni parola.
+    private Map<String, Long> frequencyEveryWord(String testo) {
+        List<String> l = Arrays.stream(testo.split(" ")).toList();
+        return l.stream().collect(Collectors.groupingBy(word -> word, Collectors.counting()));
+    }
+
 
     //    20. 📚 Dato un file di testo,
 //    leggi tutte le righe in uno stream,
